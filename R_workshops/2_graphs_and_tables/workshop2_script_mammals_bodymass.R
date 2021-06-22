@@ -1,4 +1,5 @@
 # workshop 2 Graphs and Tables
+# mammal body mass
 # alina.zeng(at)ubc.ca
 # June-21, 2021
 
@@ -16,10 +17,9 @@ library(RColorBrewer)
 
 setwd("C:/Users/alina/Documents/git/BIOL_510_Stats/R_workshops/2_graphs_and_tables")
 
+
 # import data
 d <- read.csv("mammals.csv",na.strings = "", header = T)
-
-summarise()
 
 # Which continent has the greatest number of mammal species? 
 # Which has the least? Make a table of the frequency of cases on each continent 
@@ -190,7 +190,32 @@ dev.off()
 #  Make a table of the median log body mass of each extinction-status group of 
 # mammals. Are the values consistent with the plotted distributions
 
+# Violin plot
+png(filename="violinplot.png", 
+    type="cairo", 
+    units="in", 
+    width=8, 
+    height=6, 
+    res=300)
+ggplot(d, aes(x = status, y = mass_log)) + 
+  geom_violin(fill = "goldenrod1") + 
+  labs(x = "Status", y = "Log10 body mass") + 
+  stat_summary(fun.y = mean,  geom = "point", color = "black") +
+  theme_classic()
+dev.off()
 
 
-
-  
+# Multiple histograms
+png(filename="facet_boxplot.png", 
+    type="cairo", 
+    units="in", 
+    width=8, 
+    height=6, 
+    res=300)
+ggplot(d, aes(x = mass_log)) + 
+  geom_histogram(fill = "goldenrod1", col = "black", 
+                 binwidth = 0.2, boundary = 0) +
+  labs(x = "log10 body mass", y = "Frequency") + 
+  facet_wrap(~status, ncol = 1, scales = "free_y", strip.position = "right") +
+  theme_classic()
+dev.off()
